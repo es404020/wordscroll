@@ -2,8 +2,47 @@
     import { appStore } from "$lib/stores/appState";
     import { fly, fade } from "svelte/transition";
 
+    import { onMount, onDestroy } from "svelte";
+
     let isSessionActive = false;
     let isUnlocked = false;
+
+    // Mobile Slideshow Logic
+    let isMobile = false;
+    let mobileImageIndex = 0;
+    const MOBILE_IMAGES = [
+        "/screen-landing.png",
+        "/screen-reading.png",
+        "/screen-recite.png",
+    ];
+    let slideInterval: any;
+
+    let isLoading = true;
+
+    onMount(() => {
+        setTimeout(() => {
+            isLoading = false;
+        }, 5000);
+
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+
+        slideInterval = setInterval(() => {
+            if (isMobile) {
+                mobileImageIndex =
+                    (mobileImageIndex + 1) % MOBILE_IMAGES.length;
+            }
+        }, 3000); // Cycle every 3 seconds
+
+        return () => {
+            window.removeEventListener("resize", checkMobile);
+            clearInterval(slideInterval);
+        };
+    });
+
+    function checkMobile() {
+        isMobile = window.innerWidth <= 768; // Match CSS media query
+    }
 
     // Reactively update local state based on store
     $: {
@@ -24,64 +63,17 @@
         appStore.startSession();
     }
 
-    function handleComplete() {
-        appStore.unlock();
-    }
-
-    function handleReset() {
-        appStore.reset();
-        isUnlocked = false;
-    }
-
-    import { onMount, onDestroy } from "svelte";
-
-    // Memory Verses for Slideshow
-    const MEMORY_VERSES = [
-        {
-            text: "Thy word is a lamp unto my feet, and a light unto my path.",
-            ref: "Psalm 119:105",
-        },
-        {
-            text: "I can do all things through Christ which strengtheneth me.",
-            ref: "Philippians 4:13",
-        },
-        {
-            text: "The Lord is my shepherd; I shall not want.",
-            ref: "Psalm 23:1",
-        },
-        {
-            text: "For God so loved the world, that he gave his only begotten Son.",
-            ref: "John 3:16",
-        },
-        {
-            text: "Trust in the Lord with all thine heart; and lean not unto thine own understanding.",
-            ref: "Proverbs 3:5",
-        },
-    ];
-
-    let currentVerseIndex = 0;
-    let leftVerseIndex = 2; // Offset for variety
-
-    // Timer for slideshow
-    let slideInterval: any;
-
-    onMount(() => {
-        slideInterval = setInterval(() => {
-            currentVerseIndex = (currentVerseIndex + 1) % MEMORY_VERSES.length;
-            leftVerseIndex = (leftVerseIndex + 1) % MEMORY_VERSES.length;
-        }, 5000); // Change verse every 5 seconds
-    });
-
-    onDestroy(() => {
-        if (slideInterval) clearInterval(slideInterval);
-    });
-
     // Format timer as mm:ss (though likely just seconds for now)
     $: formattedTime =
         $appStore.timer < 10 ? `0${$appStore.timer}` : $appStore.timer;
 </script>
 
 <div class="page-wrapper">
+    {#if isLoading}
+        <div class="preloader" out:fade={{ duration: 300 }}>
+            <img src="/logo.png" alt="Wordscroll" class="preloader-logo" />
+        </div>
+    {/if}
     <div class="content-card">
         {#if isUnlocked}
             <div class="view-state success-view" in:fade={{ duration: 400 }}>
@@ -144,7 +136,7 @@
                             class="btn-primary entrance-anim"
                             on:click={handleComplete}
                         >
-                            Unlock Screen
+                            Earn Screen Time
                         </button>
                     {/if}
                 </div>
@@ -159,26 +151,11 @@
                 <header class="hero-header">
                     <div class="brand-icon">
                         <div class="icon-bg">
-                            <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                            >
-                                <rect
-                                    x="5"
-                                    y="2"
-                                    width="14"
-                                    height="20"
-                                    rx="2"
-                                    ry="2"
-                                ></rect>
-                                <path d="M12 18h.01"></path>
-                                <path d="M12 6v4"></path>
-                                <path d="M10 8h4"></path>
-                            </svg>
+                            <img
+                                src="/logo.png"
+                                alt="Wordscroll Logo"
+                                class="brand-logo"
+                            />
                         </div>
                     </div>
                     <h1 class="hero-title">
@@ -225,20 +202,11 @@
                     >
                         <div class="phone-mockup side">
                             <div class="screen">
-                                {#key leftVerseIndex}
-                                    <div
-                                        class="fake-content verse-slide"
-                                        in:fade={{ duration: 800 }}
-                                    >
-                                        <p class="slide-text">
-                                            “{MEMORY_VERSES[leftVerseIndex]
-                                                .text}”
-                                        </p>
-                                        <p class="slide-ref">
-                                            {MEMORY_VERSES[leftVerseIndex].ref}
-                                        </p>
-                                    </div>
-                                {/key}
+                                <img
+                                    src="/screen-reading.png"
+                                    alt="Reading View"
+                                    class="app-screen-img"
+                                />
                             </div>
                         </div>
                     </div>
@@ -248,57 +216,23 @@
                         <div class="phone-mockup main">
                             <div class="notch"></div>
                             <div class="screen">
-                                <div class="status-bar">
-                                    <span>9:41</span>
-                                    <div class="status-icons">
-                                        <svg
-                                            width="14"
-                                            height="10"
-                                            viewBox="0 0 16 12"
-                                            fill="currentColor"
-                                            ><path
-                                                d="M1 6h2v4H1zm4-2h2v6H5zm4-3h2v9H9zm4 4h2v5h-2z"
-                                            /></svg
-                                        >
-                                    </div>
-                                </div>
-
-                                <div class="app-ui">
-                                    <div class="app-header-text">
-                                        <h2>
-                                            It is time to study God's Word.
-                                            Let's go!
-                                        </h2>
-                                        <p>
-                                            App opens after you have read.<br
-                                            />Tap on "Let's study" to get
-                                            started.
-                                        </p>
-                                    </div>
-
-                                    <div class="cross-card">
-                                        <div class="cross-visual">
-                                            <svg
-                                                width="60"
-                                                height="60"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                opacity="0.8"
-                                            >
-                                                <path
-                                                    d="M11 2v8H3v4h8v8h4v-8h8v-4h-8V2h-4z"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        class="btn-app-action"
-                                        on:click={handleStart}
-                                    >
-                                        Let's Study
-                                    </button>
-                                </div>
+                                {#key isMobile ? mobileImageIndex : "static"}
+                                    <img
+                                        src={isMobile
+                                            ? MOBILE_IMAGES[mobileImageIndex]
+                                            : "/screen-landing.png"}
+                                        alt="App Screen"
+                                        class="app-screen-img"
+                                        in:fade={{
+                                            duration: isMobile ? 500 : 0,
+                                        }}
+                                    />
+                                {/key}
+                                <button
+                                    class="invisible-trigger"
+                                    on:click={handleStart}
+                                    aria-label="Start Session"
+                                ></button>
                             </div>
                         </div>
                     </div>
@@ -310,21 +244,11 @@
                     >
                         <div class="phone-mockup side">
                             <div class="screen">
-                                {#key currentVerseIndex}
-                                    <div
-                                        class="fake-content verse-slide"
-                                        in:fade={{ duration: 800 }}
-                                    >
-                                        <p class="slide-text">
-                                            “{MEMORY_VERSES[currentVerseIndex]
-                                                .text}”
-                                        </p>
-                                        <p class="slide-ref">
-                                            {MEMORY_VERSES[currentVerseIndex]
-                                                .ref}
-                                        </p>
-                                    </div>
-                                {/key}
+                                <img
+                                    src="/screen-recite.png"
+                                    alt="Recite View"
+                                    class="app-screen-img"
+                                />
                             </div>
                         </div>
                     </div>
@@ -346,8 +270,8 @@
 
 <style>
     :global(body) {
-        background-color: #0b0b0b;
-        color: #fff;
+        background-color: var(--color-bg);
+        color: var(--color-text-primary);
     }
 
     .page-wrapper {
@@ -357,6 +281,39 @@
         align-items: center;
         width: 100%;
         overflow-x: hidden;
+    }
+
+    /* Preloader */
+    .preloader {
+        position: fixed;
+        inset: 0;
+        background-color: var(--color-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .preloader-logo {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 0.8;
+        }
+        50% {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 0.8;
+        }
     }
 
     .content-card {
@@ -393,19 +350,17 @@
     }
 
     .brand-icon .icon-bg {
-        width: 56px;
-        height: 56px;
-        background: rgba(255, 255, 255, 0.08); /* slight transparency */
-        border-radius: 16px;
+        width: 64px;
+        height: 64px;
         display: flex;
         align-items: center;
         justify-content: center;
-        backdrop-filter: blur(8px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    .brand-icon svg {
-        color: #fff;
+    .brand-logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 
     .hero-title {
@@ -426,7 +381,7 @@
 
     .store-btn {
         background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid var(--color-border);
         border-radius: 8px;
         padding: 0.5rem 1rem;
         display: flex;
@@ -440,8 +395,8 @@
     }
 
     .store-btn:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: #fff;
+        background: rgba(165, 245, 156, 0.05);
+        border-color: var(--color-accent);
         transform: translateY(-2px);
     }
 
@@ -519,7 +474,7 @@
         border-radius: 40px;
         border: 8px solid #1a1a1a;
         overflow: hidden;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 20px 50px rgba(0, 5, 0, 0.8);
     }
 
     .phone-mockup.side {
@@ -528,7 +483,7 @@
     }
 
     .screen {
-        background: #1c1c1e;
+        background: var(--color-bg);
         width: 100%;
         height: 100%;
         position: relative;
@@ -600,6 +555,7 @@
         align-items: center;
         justify-content: center;
         position: relative;
+        background: var(--color-card);
     }
 
     .cross-card::after {
@@ -615,39 +571,39 @@
 
     .btn-app-action {
         width: 100%;
-        background: #333;
-        color: #fff;
+        background: var(--color-accent);
+        color: #050905;
         border: none;
         padding: 1rem;
         border-radius: 14px;
         font-size: 0.95rem;
         font-weight: 600;
         cursor: pointer;
-        transition: background 0.2s;
+        transition: all 0.2s;
+        box-shadow: 0 0 15px var(--color-accent-glow);
     }
     .btn-app-action:hover {
-        background: #444;
+        transform: scale(1.02);
+        box-shadow: 0 0 20px var(--color-accent-glow);
     }
 
-    /* Dummy Content for Side Phones */
-    .fake-content {
-        padding: 4rem 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        opacity: 0.8; /* Increased opacity for readability */
+    .app-screen-img {
+        width: 100%;
         height: 100%;
-        justify-content: center;
+        object-fit: cover;
     }
 
-    .slide-text {
-        font-family: var(--font-serif);
-        font-size: 1.2rem;
-        line-height: 1.5;
-        color: #fff;
-        margin: 0;
-        margin-bottom: 1rem;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    .invisible-trigger {
+        position: absolute;
+        bottom: 8%; /* Approximate button position */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 60px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        z-index: 50;
     }
 
     .slide-ref {
@@ -739,8 +695,8 @@
         font-size: 1.5rem;
     }
     .btn-primary.entrance-anim {
-        background: #fff;
-        color: #000;
+        background: var(--color-accent);
+        color: #050905;
         border-radius: 30px;
         border: none;
         padding: 1rem 2rem;

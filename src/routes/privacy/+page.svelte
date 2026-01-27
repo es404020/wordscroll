@@ -7,26 +7,11 @@
         <header class="terms-header">
             <div class="logo-area">
                 <a href="/" class="home-link">
-                    <svg
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <rect
-                            x="3"
-                            y="11"
-                            width="18"
-                            height="11"
-                            rx="2"
-                            ry="2"
-                        />
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                    </svg>
+                    <img
+                        src="/logo.png"
+                        alt="Wordscroll Logo"
+                        class="brand-logo"
+                    />
                     <span>Wordscroll</span>
                 </a>
             </div>
@@ -200,8 +185,8 @@
 
 <style>
     :global(body) {
-        background-color: #0b0b0b;
-        color: #e0e0e0;
+        background-color: var(--color-bg);
+        color: var(--color-text-primary);
     }
 
     .page-container {
@@ -230,11 +215,17 @@
         align-items: center;
         gap: 0.75rem;
         text-decoration: none;
-        color: #fff;
+        color: var(--color-text-primary);
         font-family: var(--font-serif);
         font-size: 1.25rem;
         opacity: 0.8;
         transition: opacity 0.2s;
+    }
+
+    .brand-logo {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
     }
 
     .home-link:hover {
@@ -245,20 +236,23 @@
         font-family: var(--font-serif);
         font-size: 3rem;
         font-weight: 400;
+        font-weight: 400;
         margin-bottom: 0.5rem;
-        color: #fff;
+        color: var(--color-text-primary);
     }
 
     .effective-date {
         font-family: var(--font-sans);
-        color: #888;
+        color: var(--color-text-secondary);
         font-size: 0.9rem;
     }
 
     .intro {
         font-size: 1.1rem;
         line-height: 1.6;
-        color: #ccc;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: var(--color-text-dim);
         margin-bottom: 3rem;
     }
 
@@ -269,14 +263,18 @@
     h3 {
         font-family: var(--font-serif);
         font-size: 1.5rem;
-        color: #fff;
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        color: var(--color-text-primary);
         margin-bottom: 1rem;
     }
 
     p {
         font-family: var(--font-sans);
         line-height: 1.7;
-        color: #bbb;
+        font-family: var(--font-sans);
+        line-height: 1.7;
+        color: var(--color-text-secondary);
         margin: 0;
         margin-bottom: 1rem;
     }
@@ -289,7 +287,7 @@
 
     .policy-list li {
         font-family: var(--font-sans);
-        color: #bbb;
+        color: var(--color-text-secondary);
         line-height: 1.7;
         margin-bottom: 0.75rem;
         padding-left: 1.5rem;
@@ -300,21 +298,21 @@
         content: "•";
         position: absolute;
         left: 0;
-        color: #666;
+        color: var(--color-text-dim);
     }
 
     .policy-list strong {
-        color: #e0e0e0;
+        color: var(--color-text-primary);
         font-weight: 600;
     }
 
     footer {
         margin-top: 4rem;
         padding-top: 2rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: 1px solid var(--color-border);
         text-align: center;
         font-size: 0.85rem;
-        color: #666;
+        color: var(--color-text-dim);
     }
 
     @media (max-width: 768px) {
