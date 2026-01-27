@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 :root {
     --color-bg: #050905;
@@ -15,8 +15,13 @@
     --color-border: #222b22;
     --color-success: #4caf50;
 
-    --font-serif: 'Playfair Display', serif;
-    --font-sans: 'Inter', sans-serif;
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-scripture: 'Crimson Pro', serif;
+
+    /* Legacy mapping for cleaner migration */
+    --font-serif: var(--font-heading);
+    --font-sans: var(--font-body);
 }
 
 *,
@@ -41,11 +46,13 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: var(--font-serif);
+    font-family: var(--font-heading);
     margin-top: 0;
     color: var(--color-accent);
 }
 
 button {
-    font-family: var(--font-sans);
+    font-family: var(--font-heading);
+    letter-spacing: 0.02em;
+    /* detailed polish for Space Grotesk buttons */
 }

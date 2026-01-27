@@ -587,8 +587,8 @@
         text-align: left;
     }
     .verse-text {
-        font-family: var(--font-serif);
-        font-size: 1.4rem;
+        font-family: var(--font-scripture);
+        font-size: 1.5rem;
         line-height: 1.6;
         color: #e0e0e0;
         margin-bottom: 1.5rem;
@@ -616,6 +616,18 @@
     @media (max-width: 768px) {
         .hero-title {
             font-size: 2.5rem;
+        }
+
+        .store-badges {
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+        }
+
+        .store-btn {
+            width: 100%;
+            max-width: 240px;
+            justify-content: center;
         }
 
         .phones-stage {
