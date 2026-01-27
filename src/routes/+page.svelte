@@ -22,7 +22,7 @@
     onMount(() => {
         setTimeout(() => {
             isLoading = false;
-        }, 5000);
+        }, 3000);
 
         checkMobile();
         window.addEventListener("resize", checkMobile);
@@ -506,87 +506,6 @@
         z-index: 20;
     }
 
-    .status-bar {
-        height: 44px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        padding: 0.5rem 1.5rem;
-        font-size: 0.8rem;
-        font-weight: 600;
-        padding-bottom: 0.25rem;
-        color: #fff;
-    }
-
-    .app-ui {
-        flex: 1;
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        padding-bottom: 2.5rem;
-        text-align: center;
-    }
-
-    .app-header-text h2 {
-        font-family: var(--font-serif);
-        font-size: 1.7rem;
-        line-height: 1.2;
-        margin-bottom: 0.75rem;
-    }
-
-    .app-header-text p {
-        font-size: 0.8rem;
-        color: #888;
-        line-height: 1.4;
-        margin: 0;
-    }
-
-    .cross-card {
-        flex: 1;
-        width: 100%;
-        max-height: 220px;
-        background: #2a2a2c;
-        border-radius: 4px; /* Distinctive shape from image */
-        margin: 1.5rem 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        background: var(--color-card);
-    }
-
-    .cross-card::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.05) 0%,
-            transparent 100%
-        );
-    }
-
-    .btn-app-action {
-        width: 100%;
-        background: var(--color-accent);
-        color: #050905;
-        border: none;
-        padding: 1rem;
-        border-radius: 14px;
-        font-size: 0.95rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 0 15px var(--color-accent-glow);
-    }
-    .btn-app-action:hover {
-        transform: scale(1.02);
-        box-shadow: 0 0 20px var(--color-accent-glow);
-    }
-
     .app-screen-img {
         width: 100%;
         height: 100%;
@@ -604,16 +523,6 @@
         border: none;
         cursor: pointer;
         z-index: 50;
-    }
-
-    .slide-ref {
-        font-family: var(--font-sans);
-        font-size: 0.8rem;
-        color: #aaa;
-        text-align: right;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
     }
 
     /* Footer */
