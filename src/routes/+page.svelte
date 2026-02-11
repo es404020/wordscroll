@@ -66,6 +66,16 @@
     // Format timer as mm:ss (though likely just seconds for now)
     $: formattedTime =
         $appStore.timer < 10 ? `0${$appStore.timer}` : $appStore.timer;
+
+
+    function handleReset(event: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement; }) {
+        throw new Error("Function not implemented.");
+    }
+
+
+    function handleComplete(event: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement; }) {
+        throw new Error("Function not implemented.");
+    }
 </script>
 
 <div class="page-wrapper">
@@ -261,6 +271,7 @@
                     <div class="legal-links">
                         <a href="/terms">Terms of Service</a>
                         <a href="/privacy">Privacy Policy</a>
+                        <a href="/support">Support</a>
                     </div>
                 </footer>
             </div>
