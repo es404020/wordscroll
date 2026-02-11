@@ -99,9 +99,8 @@
                 <div class="faq-item">
                     <h3>Is Wordscroll free to use?</h3>
                     <p>
-                        Yes! Wordscroll is free to download and use. We may
-                        offer premium features in the future, but the core
-                        experience will always remain free.
+                        Wordscroll is a paid application. A purchase or
+                        subscription is required to use the app.
                     </p>
                 </div>
 
